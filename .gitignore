@@ -1,0 +1,23 @@
+# Generated build artifacts
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Experiment output (keep directory with .gitkeep)
+results/*
+!results/.gitkeep
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
