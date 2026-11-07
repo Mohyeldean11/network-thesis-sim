@@ -1,0 +1,15 @@
+#GOAL
+uint64 task_id
+sensor_msgs/Image image
+string target_execution 
+---
+#RESULT
+uint64 task_id
+bool success
+string message
+float64 processing_time_ms
+---
+#FEEDBACK
+uint64 task_id
+string status
+float64 progress
