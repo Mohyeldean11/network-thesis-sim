@@ -1,0 +1,11 @@
+The algorithm will estimate:
+
+    T_local = T_local_processing
+
+
+    T_edge = RTT + T_transmission + T_edge_processing
+
+
+Where:
+
+    T_transmission = ((ImageSizeBytes X 8) / (BandwidthMbps X 10^6)) X 1000

@@ -1,0 +1,13 @@
+create a package :
+ros2 pkg create <package name> \
+--build-type ament_cmake \
+--dependencies \
+rclcpp \
+rclpp_action \ 
+sensor_msgs \
+std_msgs \
+<other dependency package>
+
+
+
+
