@@ -1,5 +1,5 @@
-#ifndef THESIS_PLACEMENT_ALGORITHM_HPP_
-#define THESIS_PLACEMENT_ALGORITHM_HPP_
+#ifndef PLACEMENT_ALGORITHM_HPP_
+#define PLACEMENT_ALGORITHM_HPP_
 #include <cstddef>
 #include <string>
 #include <cmath>
