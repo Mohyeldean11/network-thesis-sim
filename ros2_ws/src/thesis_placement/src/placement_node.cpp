@@ -95,13 +95,14 @@ void PlacementNode::image_callback(sensor_msgs::msg::Image::ConstSharedPtr image
                             std::placeholders::_1
                         );
     
+    //Recording task starting time
+    task_start_time = std::chrono::steady_clock::now();
     // Send the goal asynchronously
     perception_action_client->async_send_goal
     (
         goal,
         send_goal_options
     );
-
     RCLCPP_INFO
     (
         this->get_logger(),
@@ -157,7 +158,14 @@ void PlacementNode::result_callback(const GoalHandleRunPerception::WrappedResult
                 "Result message: %s",
                 result.result->message.c_str()
             );
-
+            task_end_time = std::chrono::steady_clock::now();
+            const auto elapsed_time = std::chrono::duration<double,std::milli>(task_end_time - task_start_time).count();
+            RCLCPP_INFO
+            (
+                this->get_logger(),
+                "Time Elapsed for the whole perception: %.2f ms",
+                elapsed_time
+            );
             break;
         }
 

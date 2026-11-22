@@ -9,7 +9,7 @@
 /**OPENCV LIBS **/
 #include <opencv2/core.hpp>
 
-namespace thesis_perception_local
+namespace perception_algorithm
 {
     //OUTPUT FROM THE PERCEPTION MODEL
     struct Perception_Result

@@ -16,9 +16,9 @@ PerceptionLocalNode::PerceptionLocalNode() : rclcpp::Node("perception_local_node
     RCLCPP_INFO
     (
         this->get_logger(),
-        "PERCEPTION NODE has been initialized"
+        "Local PERCEPTION NODE has been initialized"
     );
-    action_server = rclcpp_action::create_server<RunPerception>
+    local_action_server = rclcpp_action::create_server<RunPerception>
                                     (
                                         this,
                                         "run_perception",
@@ -92,7 +92,8 @@ rclcpp_action::CancelResponse PerceptionLocalNode::handle_cancel(const std::shar
 void PerceptionLocalNode::handle_accepted(const std::shared_ptr<GoalHandleRunPerception> goal_handle)
 {
     RCLCPP_INFO(this->get_logger(),"task id %lu is accepted and being executed",goal_handle->get_goal()->task_id);
-    std::thread(
+    std::thread
+    (
         [this,goal_handle]()
         {
             execute_goal(goal_handle);
@@ -115,7 +116,7 @@ void PerceptionLocalNode::execute_goal(const std::shared_ptr<GoalHandleRunPercep
         cv_bridge::CvImagePtr cv_image = cv_bridge::toCvCopy(raw_image, "bgr8");
 
         // 3. Run the perception algorithm
-        Perception_Result perception_result = image_Processing_Algorithm.Process_Image(cv_image->image);
+        perception_algorithm::Perception_Result perception_result = image_Processing_Algorithm.Process_Image(cv_image->image);
 
         // 4. Populate the action result
         result->success = true;
@@ -125,11 +126,13 @@ void PerceptionLocalNode::execute_goal(const std::shared_ptr<GoalHandleRunPercep
         // 5. Send successful result to the action client
         goal_handle->succeed(result);
 
-        RCLCPP_INFO(
+        RCLCPP_INFO
+        (
             this->get_logger(),
             "Task %lu completed successfully in %.2f ms",
             result->task_id,
-            result->processing_time_ms);
+            result->processing_time_ms
+        );
     }
     catch (const cv_bridge::Exception &exception)
     {
@@ -138,11 +141,13 @@ void PerceptionLocalNode::execute_goal(const std::shared_ptr<GoalHandleRunPercep
 
         goal_handle->abort(result);
 
-        RCLCPP_ERROR(
+        RCLCPP_ERROR
+        (
             this->get_logger(),
             "Image conversion failed for task %lu: %s",
             result->task_id,
-            exception.what());
+            exception.what()
+        );
     }
     catch (const std::exception &exception)
     {
@@ -151,10 +156,12 @@ void PerceptionLocalNode::execute_goal(const std::shared_ptr<GoalHandleRunPercep
 
         goal_handle->abort(result);
 
-        RCLCPP_ERROR(
+        RCLCPP_ERROR
+        (
             this->get_logger(),
             "Perception failed for task %lu: %s",
             result->task_id,
-            exception.what());
+            exception.what()
+        );
     }
 }

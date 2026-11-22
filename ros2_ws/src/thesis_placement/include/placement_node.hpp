@@ -11,6 +11,9 @@
 /**DEIGNED  ALGORITHM **/
 #include "placement_algorithm.hpp"
 
+/** TIME MONITOR LIB **/
+#include <chrono>
+
 namespace thesis_placement 
 {
     class PlacementNode : public rclcpp::Node
@@ -22,6 +25,9 @@ namespace thesis_placement
         /* data */
         bool processing_goal{false};
         std::uint64_t task_id_counter{0};
+        std::chrono::steady_clock::time_point task_start_time;
+        std::chrono::steady_clock::time_point task_end_time;
+        
         //TOPIC RECEIVED
         rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_subscription;
         rclcpp_action::Client<RunPerception>::SharedPtr perception_action_client;

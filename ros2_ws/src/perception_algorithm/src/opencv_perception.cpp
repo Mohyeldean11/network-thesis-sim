@@ -1,4 +1,4 @@
-#include "./../include/opencv_perception_local.hpp"
+#include "./../include/OpenCV_Perception.hpp"
 
 
 #include <opencv2/imgproc.hpp> //NEEDED FOR RESIZING GRAYSCALING AND GAUSSIAN BLURING AND CANNY ALGO
@@ -7,9 +7,9 @@
 
 #include <chrono>     //NEEDED TO MEASURE THE EXECUTION TIME OF THE PERCEPTION ALGO
 
-using namespace thesis_perception_local ;
+using namespace perception_algorithm ;
 
-Perception_Result OpenCV_Perception_Local::Process_Image(const cv::Mat &input_image)
+Perception_Result OpenCV_Perception::Process_Image(const cv::Mat &input_image)
 {
     // CREATING A RETURN FOR THE FUNCTION OF TYPE OF PERCEPTION_RESULT STRUCT
     Perception_Result perception_result;
