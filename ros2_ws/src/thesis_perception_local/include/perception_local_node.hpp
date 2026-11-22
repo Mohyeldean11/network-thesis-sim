@@ -10,7 +10,7 @@
 
 #include <mutex>                //PROTECT SHARED STATE
 
-#include "perception_algorithm/include/opencv_perception.hpp" //CONTAINS ALGORITHM FOR PERCEPTION
+#include <opencv_perception.hpp> //CONTAINS ALGORITHM FOR PERCEPTION
 #include <thesis_interfaces/action/run_perception.hpp> //HAS THE CUSTOM ACTION INTERFACE
 
 

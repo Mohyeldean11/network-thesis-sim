@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(thesis_perception)
+project(thesis_perception_local)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wall -Wextra -Wpedantic)
@@ -19,16 +19,15 @@ add_executable(
     perception_local_node
     src/main.cpp
     src/perception_local_node.cpp
-    src/OpenCV_Perception.cpp
+    ../perception_algorithm/src/opencv_perception.cpp
 )
-
 # Include package and OpenCV headers
 target_include_directories(
     perception_local_node PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../perception_algorithm/include
     ${OpenCV_INCLUDE_DIRS}
 )
-
 # Link OpenCV libraries
 target_link_libraries(
     perception_local_node

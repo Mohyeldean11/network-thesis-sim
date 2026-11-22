@@ -8,6 +8,7 @@ sensor_msgs \
 std_msgs \
 <other dependency package>
 
+ros2 run thesis_perception_local perception_local_node --ros-args -r __ns:=/local
 
 
-
+ros2 run thesis_perception_edge perception_edge_node --ros-args -r __ns:=/edge

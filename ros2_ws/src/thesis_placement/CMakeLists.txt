@@ -15,17 +15,17 @@ find_package(thesis_interfaces REQUIRED)
 
 #build placement node
 add_executable(
-  placement_node 
+  placement_node
   src/main.cpp
   src/placement_node.cpp
-  src/placement_algorithm.cpp
+  ../placement_algorithm/src/placement_algorithm.cpp
 )
-
 #Include package headers
 target_include_directories(
   placement_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
+  ${CMAKE_CURRENT_SOURCE_DIR}/../placement_algorithm/include
 )
 
 # Link ROS 2 dependencies

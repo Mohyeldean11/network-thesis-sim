@@ -5,9 +5,9 @@
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <sensor_msgs/msg/image.hpp>
 
-#include <cv_bridge.hpp>
+#include <cv_bridge/cv_bridge.hpp>
 
-#include <perception_algorithm/include/opencv_perception.hpp>
+#include <opencv_perception.hpp>
 #include <thesis_interfaces/action/run_perception.hpp>
 
 

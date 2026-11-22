@@ -9,7 +9,7 @@
 #include <cstdint>
 
 /**DEIGNED  ALGORITHM **/
-#include "placement_algorithm.hpp"
+#include <placement_algorithm.hpp>
 
 /** TIME MONITOR LIB **/
 #include <chrono>
@@ -23,14 +23,18 @@ namespace thesis_placement
         using GoalHandleRunPerception = rclcpp_action::ClientGoalHandle<RunPerception>;
     private:
         /* data */
-        bool processing_goal{false};
+        bool processing_goal{false}; 
+        bool perception_choice{false}; //false for local perception
+
         std::uint64_t task_id_counter{0};
         std::chrono::steady_clock::time_point task_start_time;
         std::chrono::steady_clock::time_point task_end_time;
         
         //TOPIC RECEIVED
         rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr image_subscription;
-        rclcpp_action::Client<RunPerception>::SharedPtr perception_action_client;
+
+        rclcpp_action::Client<RunPerception>::SharedPtr Edge_perception_action_client;
+        rclcpp_action::Client<RunPerception>::SharedPtr Local_perception_action_client;
         //CALLBACKS
         void image_callback(sensor_msgs::msg::Image::ConstSharedPtr image_msg);
         void goal_response_callback(GoalHandleRunPerception::SharedPtr goal_handle);

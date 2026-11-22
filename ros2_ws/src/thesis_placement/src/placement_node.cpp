@@ -6,7 +6,6 @@
 #include "./../include/placement_node.hpp"
 
 using namespace thesis_placement;
-
 PlacementNode::PlacementNode() : rclcpp::Node("placement_node")
 {
     /*
@@ -30,11 +29,17 @@ PlacementNode::PlacementNode() : rclcpp::Node("placement_node")
             std::placeholders::_1
         )
     );
-    perception_action_client = rclcpp_action::create_client<RunPerception>
+    Local_perception_action_client = rclcpp_action::create_client<RunPerception>
     (
         this,
-        "/run_perception"
+        "/local/run_perception"
     );
+    Edge_perception_action_client = rclcpp_action::create_client<RunPerception>
+    (
+        this,
+        "/edge/run_perception"
+    );
+
     RCLCPP_INFO
     (
         this->get_logger(),
@@ -53,7 +58,27 @@ void PlacementNode::image_callback(sensor_msgs::msg::Image::ConstSharedPtr image
     RunPerception::Goal goal;
     goal.task_id = task_id_counter++;
     goal.image = *image_msg;
-    goal.target_execution = "LOCAL";
+    if(!perception_choice)
+    {
+        goal.target_execution = "EDGE";
+        perception_choice = true;
+        RCLCPP_INFO
+        (
+            this->get_logger(),
+            "Placement selected EDGE perception"
+        );
+    }
+    else
+    {
+        goal.target_execution = "LOCAL";
+        perception_choice = false;
+        RCLCPP_INFO
+        (
+            this->get_logger(),
+            "Placement selected LOCAL perception"
+        );
+    }
+    
     
     const auto image_width = image_msg->width;
     const auto image_height = image_msg->height;
@@ -70,12 +95,16 @@ void PlacementNode::image_callback(sensor_msgs::msg::Image::ConstSharedPtr image
     );
     
     // Check if the Action Server is available
-    if(!perception_action_client->action_server_is_ready())
+    if
+    (
+        !(Edge_perception_action_client->action_server_is_ready()) && 
+        !(Local_perception_action_client->action_server_is_ready())
+    ) 
     {
         RCLCPP_WARN
         (
             this->get_logger(),
-            "Perception Action Server is not available"
+            "Perception Action Servers are not available"
         );
         processing_goal = false;
         return;
@@ -98,11 +127,23 @@ void PlacementNode::image_callback(sensor_msgs::msg::Image::ConstSharedPtr image
     //Recording task starting time
     task_start_time = std::chrono::steady_clock::now();
     // Send the goal asynchronously
-    perception_action_client->async_send_goal
-    (
-        goal,
-        send_goal_options
-    );
+    if(!perception_choice)
+    {
+        //sending to local perception
+        Local_perception_action_client->async_send_goal
+        (
+            goal,
+            send_goal_options
+        );
+    }
+    else
+    {
+        Edge_perception_action_client->async_send_goal
+        (
+            goal,
+            send_goal_options
+        );
+    }
     RCLCPP_INFO
     (
         this->get_logger(),
